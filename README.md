@@ -1,4 +1,4 @@
-# code-with-quarkus
+# Reproducer for https://github.com/quarkusio/quarkus/issues/34546
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
