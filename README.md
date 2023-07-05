@@ -1,0 +1,1 @@
+# hibernate-error-log-missing-reproducer
