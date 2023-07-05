@@ -1,0 +1,64 @@
+<configuration debug="true">
+
+  <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <message/>
+        <timestamp>
+          <fieldName>timestamp</fieldName>
+          <pattern>[UNIX_TIMESTAMP_AS_NUMBER]</pattern>
+        </timestamp>
+        <logLevel>
+          <fieldName>log.level</fieldName>
+        </logLevel>
+        <loggerName>
+          <fieldName>logger.name</fieldName>
+        </loggerName>
+        <threadName>
+          <fieldName>thread.name</fieldName>
+        </threadName>
+        <mdc/>
+        <stackTrace>
+          <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+            <maxDepthPerThrowable>40</maxDepthPerThrowable>
+            <maxLength>4096</maxLength>
+            <shortenedClassNameLength>20</shortenedClassNameLength>
+            <rootCauseFirst>true</rootCauseFirst>
+          </throwableConverter>
+        </stackTrace>
+      </providers>
+    </encoder>
+  </appender>
+
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>%d{HH:mm:ss.SSS} %gray(\(%t\)) %green(%-5level) %highlight([%logger{36}]) %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="com.nestle.nestpay" level="DEBUG"/>
+
+  <if condition='isDefined("JSON_CONSOLE")'>
+    <then>
+      <if condition='${JSON_CONSOLE} == true'>
+        <then>
+          <root level="INFO">
+            <appender-ref ref="JSON_CONSOLE"/>
+          </root>
+        </then>
+        <else>
+          <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+          </root>
+        </else>
+      </if>
+    </then>
+    <else>
+      <logger name="org.hibernate.SQL" level="DEBUG"/>
+      <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+      </root>
+    </else>
+  </if>
+
+</configuration>
